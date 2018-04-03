@@ -2,6 +2,10 @@ import cv2
 import numpy as np
 import sys
 
+framesToUse = 64
+outFps = 5
+laserFreq = 8 #Hz
+
 v = []
 
 print("Loading video...")
@@ -20,7 +24,7 @@ cap.release()
 print("Processing video...")
 
 
-vf = np.array(v) #video frames
+vf = np.array(v[0:framesToUse]) #video frames
 
 vs = vf.transpose((1,2,0)) # s for series, as in time-series
                            # at this point, s is a list (rows) of lists (columns) of numbers (red amplitudes @ times)
@@ -32,14 +36,16 @@ ff = fs.transpose((2,0,1)) * 255.0 / np.max(fs) # back from time-series to frame
 # print(ff[0][int(len(ff[0])/2)])   #print the center row, because the first row is all black (fisheye lens)
 
 ff_bgr = np.uint8( [ [ [ [pixel,pixel,pixel] for pixel in row ] for row in frame ] for frame in ff ] )
+shape = ff_bgr[0].shape
+shape = (shape[1], shape[0])
+
 
 print("Writing video...")
 
 fourcc = cv2.VideoWriter_fourcc(*"XVID")
-out = cv2.VideoWriter(sys.argv[2], fourcc, 10.0, (640, 480))
+out = cv2.VideoWriter(sys.argv[2], fourcc, outFps, shape)
 
 for frame in ff_bgr:
   out.write(frame)
 
 out.release()
-
