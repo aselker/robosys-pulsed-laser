@@ -5,8 +5,8 @@ import sys
 
 def scaleAndSave(img, name):
 
-  scaled = np.int16(img + np.min(img))
-  scaled = (scaled * 255.0 / np.max(scaled))
+  shifted = np.int16(img) - np.min(img) 
+  scaled = (shifted * 255.0 / np.max(shifted))
 
   cv2.imwrite(name, img)
 
@@ -19,16 +19,14 @@ img2 = cv2.imread(sys.argv[2])
 diff = np.int16(img2)
 diff -= img1
 
+scaleAndSave(diff, "diff.png")
+
 scharr = cv2.Scharr(diff, cv2.CV_16S, 0, 1)
-# canny = cv2.Canny(scharr, 40, 350, 3) # Parameters taken from the c++ program, TODO: tune them
 
 scaleAndSave(scharr, "scharr.png")
 
-clip = np.vectorize(lambda x: max(x,0)) 
-clipped = clip(scharr)
+diff_u8 = np.uint8(diff)
 
-scaled = np.uint8( clipped * 255.0 / np.max(clipped) )
+canny = cv2.Canny(diff_u8, 100, 200) # Parameters taken from the c++ program, TODO: tune them
 
-cv2.imwrite("diff.png",scaled)
-
-
+scaleAndSave(canny, "canny.png")
