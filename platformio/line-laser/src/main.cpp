@@ -29,10 +29,7 @@ void loop() {
 
   while (usb.available()) {
     in = usb.read();
-    //digitalWrite(LED_BUILTIN, LOW);
-    //delay(10);
-    //digitalWrite(LED_BUILTIN, HIGH);
-    //delay(10);
+    usb.println(in); //Acknowledge that we got it
   }
 
   //analogWrite(laserPin, (unsigned int)in);
