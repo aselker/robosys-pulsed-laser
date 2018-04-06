@@ -11,28 +11,36 @@
 
 USBSerial usb;
 
-int laserPin = LED_BUILTIN;
+int laserPin = PB1;
 char in = '0';
 
 void setup()
 {
   pinMode(laserPin, OUTPUT);
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, HIGH);
 
   //Serial.begin(9600);
   usb.begin(115200);
 
-  while (usb.available()) usb.read(); //Flush the buffer
 }
 
 void loop() {
 
-  while (usb.available()) in = usb.read();
+  while (usb.available()) {
+    in = usb.read();
+    //digitalWrite(LED_BUILTIN, LOW);
+    //delay(10);
+    //digitalWrite(LED_BUILTIN, HIGH);
+    //delay(10);
+  }
 
   //analogWrite(laserPin, (unsigned int)in);
-  digitalWrite(laserPin, (in == '0') ? HIGH : LOW);
+  digitalWrite(laserPin, (in == '0') ? LOW : HIGH);
+  digitalWrite(LED_BUILTIN, (in == '0') ? HIGH : LOW);
 
-  usb.println(in);
+  //usb.println(in + '0'); //Print the char's ASCII value
 
-  delay(1000);
+  delay(10);
 }
   
