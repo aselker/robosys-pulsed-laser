@@ -19,7 +19,9 @@ def getLines(img, name, cannyConfig):
 
   cv2.imwrite(name + "-scharr.png", scale(scharr))
 
-  canny = cv2.Canny(scale(scharr), cannyConfig[0], cannyConfig[1])
+  scharr_blurred = cv2.GaussianBlur(np.abs(scharr),(5,5),0)
+
+  canny = cv2.Canny(scale(scharr_blurred), cannyConfig[0], cannyConfig[1])
 
   # cv2.imwrite(name + "-canny.png", scale(canny))
 
