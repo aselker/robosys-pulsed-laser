@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import sys
+import os
 
 def scale(img):
 
@@ -26,12 +27,20 @@ def getLines(img, name, cannyConfig):
   canny_green[:,:,1] = canny
   cv2.imwrite(name + "-lines.png", scale(img + canny_green))
 
-img1 = cv2.imread(sys.argv[1])
-img2 = cv2.imread(sys.argv[2])
 
+off = cv2.imread(sys.argv[1])
 
-diff = np.int16(img2)
-diff -= img1
+for i in sys.argv[2:]:
 
-getLines(diff,"diff", (100,400))
-getLines(img2,"on",(100,400))
+  print(i)
+
+  on = cv2.imread(i)
+
+  if not os.path.exists(i):
+    os.makedirs(i)
+ 
+  diff = np.int16(on)
+  diff -= off
+
+  getLines(diff,os.path.join(i,"diff"), (60,450))
+  getLines(on,os.path.join(i,"on"),(100,450))
