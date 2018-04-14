@@ -29,6 +29,7 @@ def getLines(img, name, cannyConfig):
 
 
 off = cv2.imread(sys.argv[1])
+print("Baseline image: " + sys.argv[1])
 
 for i in sys.argv[2:]:
 
@@ -43,5 +44,5 @@ for i in sys.argv[2:]:
   diff = np.int16(on)
   diff -= off
 
-  getLines(diff,os.path.join(name,"diff"), (60,450))
+  getLines(diff,os.path.join(name,"diff"), (20,350))
   getLines(on,os.path.join(name,"on"),(100,450))
