@@ -32,15 +32,16 @@ off = cv2.imread(sys.argv[1])
 
 for i in sys.argv[2:]:
 
-  print(i)
-
   on = cv2.imread(i)
 
-  if not os.path.exists(i):
-    os.makedirs(i)
+  print(i)
+  name = os.path.splitext(os.path.basename(i))[0] # "here/there/pic.png" -> "pic"
+
+  if not os.path.exists(name):
+    os.mkdir(name)
  
   diff = np.int16(on)
   diff -= off
 
-  getLines(diff,os.path.join(i,"diff"), (60,450))
-  getLines(on,os.path.join(i,"on"),(100,450))
+  getLines(diff,os.path.join(name,"diff"), (60,450))
+  getLines(on,os.path.join(name,"on"),(100,450))
