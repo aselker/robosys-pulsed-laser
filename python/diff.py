@@ -48,4 +48,4 @@ for i in sys.argv[2:]:
   diff -= off
 
   getLines(diff, os.path.join(name,"diff"), 51, (10,50))
-  getLines(on, os.path.join(name,"on"), 11, (100,450))
+  getLines(on, os.path.join(name,"on"), 51, (10,50))
