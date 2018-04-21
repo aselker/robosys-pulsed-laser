@@ -9,7 +9,7 @@ def scale(img):
   scaled = np.uint8(shifted * 255.0 / np.max(shifted))
   return scaled
 
-def getLines(img, name, cannyConfig):
+def getLines(img, name, gaussSize, cannyConfig):
 
   #Take only the red channel
   img[:,:,0] = img[:,:,2]
@@ -19,7 +19,8 @@ def getLines(img, name, cannyConfig):
 
   cv2.imwrite(name + "-scharr.png", scale(scharr))
 
-  scharr_blurred = cv2.GaussianBlur(np.abs(scharr),(5,5),0)
+  #scharr_blurred = cv2.GaussianBlur(np.abs(scharr),(gaussSize,gaussSize),0)
+  scharr_blurred = cv2.GaussianBlur(scharr,(gaussSize,gaussSize),0)
 
   canny = cv2.Canny(scale(scharr_blurred), cannyConfig[0], cannyConfig[1])
 
@@ -46,5 +47,5 @@ for i in sys.argv[2:]:
   diff = np.int16(on)
   diff -= off
 
-  getLines(diff,os.path.join(name,"diff"), (20,350))
-  getLines(on,os.path.join(name,"on"),(100,450))
+  getLines(diff, os.path.join(name,"diff"), 51, (10,50))
+  getLines(on, os.path.join(name,"on"), 11, (100,450))
