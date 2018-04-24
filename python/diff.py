@@ -15,16 +15,17 @@ def getLines(img, name, gaussSize, cannyConfig):
   img[:,:,0] = img[:,:,2]
   img[:,:,1] = img[:,:,2]
 
+  """
   scharr = cv2.Scharr(img, cv2.CV_16S, 0, 1)
+  cv2.imwrite(name + "-scharr.png", scale(scharr))
+  scharr_blurred = cv2.GaussianBlur(scharr,(gaussSize,gaussSize),0)
+  """
 
+  blurred = cv2.GaussianBlur(img,(gaussSize,gaussSize),0)
+  scharr = cv2.Scharr(blurred, cv2.CV_16S, 0, 1)
   cv2.imwrite(name + "-scharr.png", scale(scharr))
 
-  #scharr_blurred = cv2.GaussianBlur(np.abs(scharr),(gaussSize,gaussSize),0)
-  scharr_blurred = cv2.GaussianBlur(scharr,(gaussSize,gaussSize),0)
-
-  canny = cv2.Canny(scale(scharr_blurred), cannyConfig[0], cannyConfig[1])
-
-  # cv2.imwrite(name + "-canny.png", scale(canny))
+  canny = cv2.Canny(scale(scharr), cannyConfig[0], cannyConfig[1])
 
   canny_green = np.zeros(img.shape)
   canny_green[:,:,1] = canny
