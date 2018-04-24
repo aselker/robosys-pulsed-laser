@@ -57,6 +57,7 @@ for i in sys.argv[2:]:
   diff = np.int16(on)
   diff -= off
 
-  #getLines(diff, os.path.join(name,"diff"), 19, (160,230))
-  getLines(diff, os.path.join(name,"diff"), 19, None)
-#  getLines(on, os.path.join(name,"on"), 15, (120,170))
+  print("Difference...")
+  getLines(diff, os.path.join(name,"diff"), 19, (160,230))
+  print("Single shot...")
+  getLines(on, os.path.join(name,"on"), 19, (160,230))
